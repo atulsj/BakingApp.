@@ -3,4 +3,8 @@
     <dimen name="fifteen">15dp</dimen>
     <dimen name="ten">10dp</dimen>
     <dimen name="widget_margin">8dp</dimen>
+    <dimen name="card_margin_right">0dp</dimen>
+    <dimen name="card_margin_left">0dp</dimen>
+    <dimen name="card_width">300dp</dimen>
+    <dimen name="recipe_name_fragment_container">330dp</dimen>
 </resources>

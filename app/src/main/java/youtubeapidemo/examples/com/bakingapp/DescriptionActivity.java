@@ -1,7 +1,6 @@
 package youtubeapidemo.examples.com.bakingapp;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +24,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
 
@@ -76,12 +74,9 @@ public class DescriptionActivity extends AppCompatActivity implements ExoPlayer.
                 mPreviousButton.setVisibility(View.VISIBLE);
                 mDescriptionPosition.setText("" + (mCurrentPosition) + "/" + (mDescription.size() - 1));
                 mDescriptionPosition.setVisibility(View.VISIBLE);
+
                 releasePlayer();
-                if ((Util.SDK_INT <= 23 || mSimpleExoPlayer == null)) {
-                    initializePlayer();
-                } else if (Util.SDK_INT > 23) {
-                    initializePlayer();
-                }
+          initializePlayer();
 
             }
         });
@@ -98,12 +93,10 @@ public class DescriptionActivity extends AppCompatActivity implements ExoPlayer.
                 mNextButton.setVisibility(View.VISIBLE);
                 mDescriptionPosition.setText("" + (mCurrentPosition) + "/" + (mDescription.size() - 1));
                 mStep.setText(mDescription.get(mCurrentPosition).getDescription());
+
                 releasePlayer();
-                if ((Util.SDK_INT <= 23 || mSimpleExoPlayer == null)) {
-                    initializePlayer();
-                } else if (Util.SDK_INT > 23) {
-                    initializePlayer();
-                }
+                initializePlayer();
+
             }
         });
 
@@ -111,14 +104,16 @@ public class DescriptionActivity extends AppCompatActivity implements ExoPlayer.
 
     private void initializePlayer() {
         mPlayerView = (SimpleExoPlayerView) findViewById(playerView);
+        mPlayerView.setVisibility(View.VISIBLE);
         mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(
                 new DefaultRenderersFactory(this),
                 new DefaultTrackSelector(), new DefaultLoadControl());
         mPlayerView.setPlayer(mSimpleExoPlayer);
         String url = mDescription.get(mCurrentPosition).getVideoURL();
         if(url==null || url.isEmpty()) {
-            mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.no_video));
-            url = "abc";
+
+            mPlayerView.setVisibility(View.GONE);
+            return;
         }
             Uri uri = Uri.parse(url);
             MediaSource mediaSource = buildMediaSource(uri);

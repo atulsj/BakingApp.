@@ -1,7 +1,6 @@
 package youtubeapidemo.examples.com.bakingapp;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,7 +14,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Lis
 
 
     public static ProgressBar mProgressBar;
-    private int previosPosition;
+    private static int previosPosition=0;
     public static final String LIST_KEY = "clicked item position";
     public static final String BUNDLE = "bundle";
     public static final String INGREDIENT_ACTIVITY_NAME = "name";
@@ -25,8 +24,12 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Lis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mProgressBar= (ProgressBar) findViewById(R.id.prog_main);
-        if(savedInstanceState==null)
+
+        if(previosPosition==0) {
             mProgressBar.setVisibility(View.VISIBLE);
+            previosPosition++;
+        }
+
        /* if (savedInstanceState != null && !savedInstanceState.isEmpty() && savedInstanceState.containsKey("CLICKED_POSITION")) {
             previosPosition = savedInstanceState.getInt("CLICKED_POSITION", 0);
         }*/
@@ -41,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Lis
     @Override
     public void onListItemClick(int clickedItemIndex,String name) {
 
-        if (Configuration.ORIENTATION_PORTRAIT == getResources().getConfiguration().orientation) {
+
             previosPosition = clickedItemIndex;
             Intent intent = new Intent(MainActivity.this, IngredientActivity.class);
             Bundle bundle=new Bundle();
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Lis
             intent.putExtra(BUNDLE, bundle);
             intent.setAction("DETAILS");
             startActivity(intent);
-        } /*else
+         /*else
         if (previosPosition != clickedItemIndex) {
             progressBar.setVisibility(View.VISIBLE);
             DetailIngredientFragment detailIngredientFragment = new DetailIngredientFragment();

@@ -4,15 +4,13 @@ import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-/**
- * Created by 1515012 on 10-07-2017.
- */
 
-public class VerticalSpaceItemDecoration extends RecyclerView.ItemDecoration {
+
+class VerticalSpaceItemDecoration extends RecyclerView.ItemDecoration {
 
     private final int verticalSpaceHeight;
 
-    public VerticalSpaceItemDecoration(int verticalSpaceHeight) {
+    VerticalSpaceItemDecoration(int verticalSpaceHeight) {
         this.verticalSpaceHeight = verticalSpaceHeight;
     }
 
@@ -21,6 +19,7 @@ public class VerticalSpaceItemDecoration extends RecyclerView.ItemDecoration {
                                RecyclerView.State state) {
         if (parent.getChildAdapterPosition(view) != parent.getAdapter().getItemCount() - 1) {
             outRect.bottom = verticalSpaceHeight;
+         //   outRect.
         }
     }
 }

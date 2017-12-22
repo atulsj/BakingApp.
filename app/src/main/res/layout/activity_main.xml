@@ -8,27 +8,33 @@
 
     <TextView
         android:id="@+id/text"
-        android:paddingTop="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:paddingTop="8dp"
         android:text="@string/head"
         android:textSize="30sp" />
 
-    <fragment
-        android:id="@+id/master_list_fragment"
-        android:name="youtubeapidemo.examples.com.bakingapp.MainActivityFragment"
-        android:layout_width="match_parent"
-        android:layout_centerHorizontal="true"
+    <FrameLayout
+        android:layout_width="@dimen/recipe_name_fragment_container"
         android:layout_height="match_parent"
         android:layout_below="@+id/text"
-        tools:layout="@layout/fragment_main_activity" />
+        android:layout_centerHorizontal="true">
+
+        <fragment
+            android:id="@+id/master_list_fragment"
+            android:name="youtubeapidemo.examples.com.bakingapp.MainActivityFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_main_activity" />
+    </FrameLayout>
+
 
     <ProgressBar
         android:id="@+id/prog_main"
-        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:visibility="invisible" />
 </RelativeLayout>

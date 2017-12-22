@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -34,8 +35,9 @@ public class MainActivityFragment extends Fragment {
     private static final String TAG = MainActivityFragment.class.getSimpleName();
 
     private RecipeAdapter recipeAdapter;
-    private static final int VERTICAL_ITEM_SPACE = 25;
+    private static final int VERTICAL_ITEM_SPACE = 29;
     private ArrayList<Recipes> arrayList;
+    public static final int NO_OF_COLUMNS = 3;
 
     public static final String RECIPE_LIST = "Recipe list";
 
@@ -57,9 +59,11 @@ public class MainActivityFragment extends Fragment {
         updateNetwork();
         if (savedInstanceState == null) {
             makeJsonArrayRequest();
+
         } else if (savedInstanceState.containsKey(RECIPE_LIST)) {
-            arrayList=savedInstanceState.getParcelableArrayList(RECIPE_LIST);
+            arrayList = savedInstanceState.getParcelableArrayList(RECIPE_LIST);
             recipeAdapter.changeData(arrayList);
+            MainActivity.mProgressBar.setVisibility(View.INVISIBLE);
         }
 
 
@@ -71,8 +75,20 @@ public class MainActivityFragment extends Fragment {
         arrayList = new ArrayList<>();
         recipeAdapter = new RecipeAdapter(getActivity(), arrayList);
         recyclerView.setAdapter(recipeAdapter);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(linearLayoutManager);
+        Configuration configuration = getActivity().getResources().getConfiguration();
+        /*int screenWidthDp = configuration.screenWidthDp; //The current width of the available screen space, in dp units, corresponding to screen width resource qualifier.
+        */
+
+        int smallestScreenWidthDp = configuration.smallestScreenWidthDp; //The smallest screen size an application will see in normal operation, corresponding to smallest screen width resource qualifier
+        if (smallestScreenWidthDp < 600) {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(linearLayoutManager);
+        } else {
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+            recyclerView.setLayoutManager(gridLayoutManager);
+
+        }
+        recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE));
     }
 
@@ -82,12 +98,6 @@ public class MainActivityFragment extends Fragment {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-
-
-                        if (IngredientActivity.mProgressBar == null &&
-                                getActivity().getResources().getConfiguration().orientation ==
-                                        Configuration.ORIENTATION_PORTRAIT)
-                                MainActivity.mProgressBar.setVisibility(View.INVISIBLE);
                         try {
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject person = (JSONObject) response.get(i);
@@ -100,11 +110,14 @@ public class MainActivityFragment extends Fragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.i(TAG, "Error: " + e.getMessage());
-                        }
-                        finally {
+                            updateNetwork();
+                        } finally {
                             recyclerView.setVisibility(View.VISIBLE);
+                            MainActivity.mProgressBar.setVisibility(View.INVISIBLE);
+                            recipeAdapter.changeData(arrayList);
+
                         }
-                        recipeAdapter.changeData(arrayList);
+
                     }
                 }, new Response.ErrorListener() {
             @Override

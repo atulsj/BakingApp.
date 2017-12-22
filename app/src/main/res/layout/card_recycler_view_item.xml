@@ -3,12 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
+    android:layout_marginLeft="@dimen/card_margin_left"
+    android:layout_marginRight="@dimen/card_margin_right"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="90dp"
     app:cardCornerRadius="4dp"
     app:cardElevation="2dp">
 
     <LinearLayout
+        android:layout_gravity="center"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -16,7 +21,7 @@
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
             android:gravity="bottom|center"
             android:textAllCaps="true"
             android:textSize="30sp"
@@ -27,7 +32,7 @@
         <TextView
             android:id="@+id/serving"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:gravity="center|top"
             android:paddingLeft="7dp"
             android:textSize="15sp"
