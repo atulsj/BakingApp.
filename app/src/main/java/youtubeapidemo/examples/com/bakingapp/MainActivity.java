@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Lis
 
 
     public static ProgressBar mProgressBar;
-    private static int previosPosition=0;
+    private int previosPosition=0;
     public static final String LIST_KEY = "clicked item position";
     public static final String BUNDLE = "bundle";
     public static final String INGREDIENT_ACTIVITY_NAME = "name";
@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Lis
             mProgressBar.setVisibility(View.VISIBLE);
             previosPosition++;
         }
-
        /* if (savedInstanceState != null && !savedInstanceState.isEmpty() && savedInstanceState.containsKey("CLICKED_POSITION")) {
             previosPosition = savedInstanceState.getInt("CLICKED_POSITION", 0);
         }*/

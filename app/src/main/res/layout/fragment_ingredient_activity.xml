@@ -19,6 +19,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
         android:layout_weight="1"
+        tools:visibility="visible"
         android:visibility="invisible"
         app:cardCornerRadius="4dp"
         app:cardElevation="2dp">
@@ -29,6 +30,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/ingredient_head"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="6dp"
@@ -51,7 +53,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@drawable/custom_button_selector"
-        android:text="Start Cooking"
+        android:text="@string/start_cooking"
+        tools:visibility="visible"
         android:textAllCaps="true"
         android:textColor="#ffffff"
         android:visibility="invisible" />

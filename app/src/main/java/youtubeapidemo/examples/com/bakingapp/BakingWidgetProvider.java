@@ -27,7 +27,8 @@ public class BakingWidgetProvider extends AppWidgetProvider {
         BakingItemsService.startActionUpdateRecipeWidgets(context);
     }
 
-    public static void updateRecipeWidgets(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+    public static void updateRecipeWidgets(Context context, AppWidgetManager appWidgetManager,
+                                           int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
