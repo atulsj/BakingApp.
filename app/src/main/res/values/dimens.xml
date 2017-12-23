@@ -8,4 +8,7 @@
     <dimen name="card_width">300dp</dimen>
     <dimen name="recipe_name_fragment_container">330dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="start_cook_buton_size">15sp</dimen>
+    <dimen name="ingredient_item_size">20sp</dimen>
+    <dimen name="ingredient_item_head">30sp</dimen>
 </resources>

@@ -27,6 +27,7 @@ import static youtubeapidemo.examples.com.bakingapp.R.id.playerView;
 
 public class DescriptionActivityFragment extends Fragment {
     public static final String VIDEO_URL = "video_url";
+    private static final String STEP_NO = "step_no";
     private SimpleExoPlayerView mPlayerView;
     private Button mPreviousButton, mNextButton;
     private ArrayList<Description> mDescription;
@@ -54,10 +55,18 @@ public class DescriptionActivityFragment extends Fragment {
         Configuration configuration = getActivity().getResources().getConfiguration();
         int smallestScreenWidthDp = configuration.smallestScreenWidthDp;
 
+        if(savedInstanceState!=null){
+            mCurrentPosition=savedInstanceState.getInt(STEP_NO);
+        }
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra(IngredientActivityFragment.DESCRIPTION_ARRAY_LIST)) {
             mDescription = intent.getParcelableArrayListExtra(IngredientActivityFragment
                     .DESCRIPTION_ARRAY_LIST);
+
+            mNoVideoText= rootView.findViewById(R.id.no_video_text);
+            display();
+            initializePlayer();
+            Log.e(TAG,"1");
         } else if (configuration.orientation ==
                 Configuration.ORIENTATION_LANDSCAPE) {
             mNextButton.setVisibility(View.INVISIBLE);
@@ -66,6 +75,8 @@ public class DescriptionActivityFragment extends Fragment {
             pos = bundle.getInt(IngredientActivity.ARG);
             mDescription = new ArrayList<>();
             makeJsonArrayRequest();
+
+            Log.e(TAG,"2");
         }
         if ((configuration.orientation ==
                 Configuration.ORIENTATION_PORTRAIT || configuration.orientation==
@@ -73,9 +84,12 @@ public class DescriptionActivityFragment extends Fragment {
             display();
             initializePlayer();
         }
-        if(configuration.orientation==Configuration.ORIENTATION_LANDSCAPE){
+        if(configuration.orientation==Configuration.ORIENTATION_LANDSCAPE ){
             mNoVideoText= rootView.findViewById(R.id.no_video_text);
+
+            Log.e(TAG,"3");
         }
+        Log.e(TAG,"oncreate view");
         return rootView;
     }
 
@@ -85,9 +99,12 @@ public class DescriptionActivityFragment extends Fragment {
         SetUpPreviousButton();
         SetUpNextButton();
 
+        Log.e(TAG,"diplay view");
     }
 
     private void SetUpPreviousButton(){
+
+        Log.e(TAG,"setup previous");
         mPreviousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,6 +129,8 @@ public class DescriptionActivityFragment extends Fragment {
 
 
     private void SetUpNextButton(){
+
+        Log.e(TAG,"setup next");
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,6 +151,8 @@ public class DescriptionActivityFragment extends Fragment {
         });
     }
     private void makeJsonArrayRequest() {
+
+        Log.e(TAG,"makejsonarrayReq");
         String mUrlBaking = "https://go.udacity.com/android-baking-app-json";
         JsonArrayRequest req = new JsonArrayRequest(mUrlBaking,
                 new Response.Listener<JSONArray>() {
@@ -170,6 +191,8 @@ public class DescriptionActivityFragment extends Fragment {
     }
 
     private void initializePlayer() {
+
+        Log.e(TAG,"initializePlayer");
         if(mPlayerView!=null)
         mPlayerView.setVisibility(View.VISIBLE);
         final String url = mDescription.get(mCurrentPosition).getVideoURL();
@@ -202,14 +225,22 @@ public class DescriptionActivityFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+
+        Log.e(TAG,"onPause");
         ExoPlayerHandler.getInstance().goToBackground();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        Log.e(TAG,"oncDestroyView");
         ExoPlayerHandler.getInstance().releaseVideoPlayer();
     }
 
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STEP_NO,mCurrentPosition);
+    }
 }

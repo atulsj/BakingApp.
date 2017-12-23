@@ -16,7 +16,7 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 
 
-class ExoPlayerHandler {
+public class ExoPlayerHandler {
     private static ExoPlayerHandler instance;
 
     static ExoPlayerHandler getInstance() {

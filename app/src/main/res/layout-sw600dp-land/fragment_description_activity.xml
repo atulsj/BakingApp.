@@ -8,6 +8,7 @@
     tools:context="youtubeapidemo.examples.com.bakingapp.DescriptionActivity">
 
     <RelativeLayout
+        android:background="#000000"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2">
@@ -20,6 +21,8 @@
             android:layout_centerInParent="true" />
 
         <TextView
+            android:textColor="#ffffff"
+            tools:textColor="#000000"
             android:id="@+id/no_video_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

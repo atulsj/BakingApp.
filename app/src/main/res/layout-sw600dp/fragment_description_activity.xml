@@ -9,14 +9,15 @@
 
 
     <RelativeLayout
+        android:background="#000000"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2">
+        android:layout_height="102dp"
+        android:layout_weight="1">
 
         <com.google.android.exoplayer2.ui.SimpleExoPlayerView
             android:id="@+id/playerView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             tools:layout_width="match_parent" />
 
@@ -25,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:textColor="#ffffff"
             android:text="@string/no_video_available"
             android:textSize="40sp"
             android:visibility="invisible"
@@ -34,23 +36,20 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="2">
 
-        <ScrollView
+
+        <TextView
+            android:id="@+id/step_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/linearLayout"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            android:padding="10dp"
+            android:textSize="30sp"
+            tools:text="Here is the description" />
 
-            <TextView
-                android:id="@+id/step_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textSize="19sp"
-                tools:text="Here is the description" />
-        </ScrollView>
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -70,6 +69,7 @@
                 android:background="@drawable/custom_button_selector"
                 android:text="@string/previous"
                 android:textColor="#ffffff"
+                android:textSize="25sp"
                 android:visibility="invisible" />
 
             <TextView
@@ -78,7 +78,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:gravity="center_horizontal|bottom"
-                android:textSize="20sp"
+                android:textSize="30sp"
                 tools:text="5/9" />
 
             <Button
@@ -88,7 +88,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/custom_button_selector"
                 android:text="@string/next"
-                android:textColor="#ffffff" />
+                android:textColor="#ffffff"
+                android:textSize="25sp" />
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

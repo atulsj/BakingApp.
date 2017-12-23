@@ -3,4 +3,6 @@
     <dimen name="card_margin_right">10dp</dimen>
     <dimen name="card_margin_left">10dp</dimen>
     <dimen name="recipe_name_fragment_container">900dp</dimen>
+    <dimen name="ingredient_item_size">20sp</dimen>
+    <dimen name="ingredient_item_head">30sp</dimen>
 </resources>
