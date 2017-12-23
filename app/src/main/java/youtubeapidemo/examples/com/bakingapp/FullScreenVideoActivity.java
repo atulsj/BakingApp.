@@ -17,6 +17,7 @@ public class FullScreenVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_screen_video);
     }
+
     @Override
     protected void onResume(){
         super.onResume();

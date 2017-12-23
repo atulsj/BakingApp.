@@ -2,7 +2,10 @@ package youtubeapidemo.examples.com.bakingapp;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 public class DescriptionActivity extends AppCompatActivity{
 
@@ -10,8 +13,26 @@ public class DescriptionActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_description);
-        if(getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE){
+
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        Configuration configuration = getResources().getConfiguration();
+        int smallestScreenWidthDp = configuration.smallestScreenWidthDp;
+        if(getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE &&
+                smallestScreenWidthDp>=600
+                ){
             finish();
         }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

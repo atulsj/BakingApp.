@@ -10,10 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -29,16 +27,16 @@ import java.util.ArrayList;
 
 
 public class IngredientActivityFragment extends Fragment {
-    // @BindView(R.id.recycler_view)
-    private RecyclerView recyclerView;
+    private static final String RESTORE_INGREDIENT_LIST = "restore_ingredient_list";
+    private static final String ITEM_POSITION ="item_postion" ;
     // @BindView(R.id.cook_custom_button)
-    private Button cookingButton;
+    private View cookingButton;
     // @BindView(R.id.card_view_ingredients)
     private CardView cardViewIngredients;
     public static final String TAG = IngredientActivityFragment.class.getSimpleName();
     private IngredientAdapter ingredientAdapter;
     public static int pos;
-    private ArrayList<String> arrayList;
+    private ArrayList<String> ingredientArrayList;
     public static ArrayList<Description> descriptionArrayList;
     public static final String WIDGIT_POSITION = "WIDGIT POSITION";
     public static final String DESCRIPTION_ARRAY_LIST = "list";
@@ -50,17 +48,36 @@ public class IngredientActivityFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_ingredient_activity, container, false);
         //ButterKnife.bind(this, root);
-        recyclerView = root.findViewById(R.id.recycler_view);
+
+        RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         ingredientHead = root.findViewById(R.id.ingredient_head);
 
-        if (getActivity().getResources().getConfiguration().orientation ==
-                Configuration.ORIENTATION_PORTRAIT) {
+        Configuration configuration = getActivity().getResources().getConfiguration();
+        int smallestScreenWidthDp = configuration.smallestScreenWidthDp;
+        boolean orient=configuration.orientation ==
+                Configuration.ORIENTATION_PORTRAIT;
+        if ( orient || smallestScreenWidthDp < 600) {
             cookingButton = root.findViewById(R.id.cook_custom_button);
+            if(orient)
             cardViewIngredients = root.findViewById(R.id.card_view_ingredients);
         }
 
+        if (cookingButton != null) {
+            cookingButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.e("Yoooo","YES!!");
+                    Intent intent = new Intent(getActivity(), DescriptionActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList(DESCRIPTION_ARRAY_LIST,
+                            descriptionArrayList);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+            });
+        }
 
-        arrayList = new ArrayList<>();
+        ingredientArrayList=new ArrayList<>();
         descriptionArrayList = new ArrayList<>();
         Intent intent = getActivity().getIntent();
         if (intent != null) {
@@ -72,28 +89,20 @@ public class IngredientActivityFragment extends Fragment {
             }
         }
         // if (NetworkReceiver.isNetworkOnline(getActivity())) {
-        makeJsonArrayRequest();
+
         // }
+        if(savedInstanceState!=null){
+            pos=savedInstanceState.getInt(ITEM_POSITION);
+          //  ingredientArrayList=savedInstanceState.getStringArrayList(RESTORE_INGREDIENT_LIST);
+        }
+            makeJsonArrayRequest();
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        ingredientAdapter = new IngredientAdapter(getActivity(), arrayList);
+        ingredientAdapter = new IngredientAdapter(getActivity(), ingredientArrayList);
         recyclerView.setAdapter(ingredientAdapter);
-        if (getActivity().getResources().getConfiguration().orientation ==
-                Configuration.ORIENTATION_PORTRAIT) {
-            RecyclerView.OnItemTouchListener disabler = new RecyclerViewDisabler();
-            recyclerView.addOnItemTouchListener(disabler);
-            cookingButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getActivity(), DescriptionActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList(DESCRIPTION_ARRAY_LIST,
-                            descriptionArrayList);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
-            });
-        }
+      //  RecyclerView.OnItemTouchListener disabler = new RecyclerViewDisabler();
+   //     recyclerView.addOnItemTouchListener(disabler);
         return root;
     }
 
@@ -112,11 +121,9 @@ public class IngredientActivityFragment extends Fragment {
                                 JSONObject ingr = (JSONObject) ingredients.get(j);
                                 ingredientsRequirent = ingr.getString("ingredient") + " - " +
                                         ingr.getDouble("quantity") + " " + ingr.getString("measure");
-                                arrayList.add(ingredientsRequirent);
+                                ingredientArrayList.add(ingredientsRequirent);
                             }
-
                             /*Cooking button,card View  is not available in Landscape layout*/
-
                             JSONArray steps = recipe.getJSONArray("steps");
                             for (int i = 0; i < steps.length(); i++) {
                                 JSONObject step = (JSONObject) steps.get(i);
@@ -127,22 +134,17 @@ public class IngredientActivityFragment extends Fragment {
                                 descriptionArrayList.add(new Description(id, shortDescription,
                                         describe, videoURL));
                             }
-                            if(getActivity().getResources().getConfiguration().orientation==
-                                    Configuration.ORIENTATION_PORTRAIT) {
+                            if (cookingButton != null ) {
                                 cookingButton.setVisibility(View.VISIBLE);
+                            }
+                            if(cardViewIngredients!=null){
                                 cardViewIngredients.setVisibility(View.VISIBLE);
                             }
-
                             ingredientHead.setVisibility(View.VISIBLE);
-                            ingredientAdapter.changeData(arrayList);
+                            ingredientAdapter.changeData(ingredientArrayList);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.i(TAG, "Error: " + e.getMessage());
-                        } finally {
-                            if (IngredientActivity.mProgressBar != null)
-                                IngredientActivity.mProgressBar.setVisibility(View.INVISIBLE);
-                            if (MainActivity.mProgressBar != null)
-                                MainActivity.mProgressBar.setVisibility(View.INVISIBLE);
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -156,6 +158,13 @@ public class IngredientActivityFragment extends Fragment {
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList(RESTORE_INGREDIENT_LIST, ingredientArrayList);
+        outState.putInt(ITEM_POSITION,pos);
+    }
+/*
     private class RecyclerViewDisabler implements RecyclerView.OnItemTouchListener {
 
         @Override
@@ -172,6 +181,6 @@ public class IngredientActivityFragment extends Fragment {
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
         }
-    }
+    }*/
 
 }

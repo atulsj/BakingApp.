@@ -63,7 +63,7 @@ public class MainActivityFragment extends Fragment {
         } else if (savedInstanceState.containsKey(RECIPE_LIST)) {
             arrayList = savedInstanceState.getParcelableArrayList(RECIPE_LIST);
             recipeAdapter.changeData(arrayList);
-            MainActivity.mProgressBar.setVisibility(View.INVISIBLE);
+            //MainActivity.mProgressBar.setVisibility(View.INVISIBLE);
         }
 
 
@@ -113,7 +113,7 @@ public class MainActivityFragment extends Fragment {
                             updateNetwork();
                         } finally {
                             recyclerView.setVisibility(View.VISIBLE);
-                            MainActivity.mProgressBar.setVisibility(View.INVISIBLE);
+                           // MainActivity.mProgressBar.setVisibility(View.INVISIBLE);
                             recipeAdapter.changeData(arrayList);
 
                         }

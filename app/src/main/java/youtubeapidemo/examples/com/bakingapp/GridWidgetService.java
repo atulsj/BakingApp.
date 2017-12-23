@@ -12,9 +12,6 @@ import static youtubeapidemo.examples.com.bakingapp.provider.BakeContact.BASE_CO
 import static youtubeapidemo.examples.com.bakingapp.provider.BakeContact.BakeEntry;
 import static youtubeapidemo.examples.com.bakingapp.provider.BakeContact.PATH_RECIPES;
 
-/**
- * Created by 1515012 on 25-07-2017.
- */
 
 public class GridWidgetService extends RemoteViewsService {
 
@@ -26,11 +23,10 @@ public class GridWidgetService extends RemoteViewsService {
 
 class GridRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
-    private static final String TAG = GridRemoteViewsFactory.class.getSimpleName();
-    Context mContext;
-    Cursor mCursor;
+    private Context mContext;
+    private Cursor mCursor;
 
-    public GridRemoteViewsFactory(Context applicationContext) {
+    GridRemoteViewsFactory(Context applicationContext) {
         mContext = applicationContext;
     }
 

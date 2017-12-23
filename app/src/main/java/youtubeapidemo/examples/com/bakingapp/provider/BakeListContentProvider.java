@@ -58,10 +58,6 @@ public class BakeListContentProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        // Notify the resolver if the uri has been changed, and return the newly inserted URI
-//        getContext().getContentResolver().notifyChange(uri, null);
-
-        // Return constructed uri (this points to the newly inserted row of data)
         return returnUri;
     }
 
@@ -109,11 +105,6 @@ public class BakeListContentProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
-
-        // Set a notification URI on the Cursor and return that Cursor
-        // retCursor.setNotificationUri(getContext().getContentResolver(), uri);
-
-        // Return the desired Cursor
         return cursor;
     }
 

@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     android:background="#FFF9C4"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/fifteen"
+    android:paddingBottom="@dimen/ten"
     android:paddingLeft="@dimen/ten"
     android:paddingRight="@dimen/ten"
-    android:paddingTop="@dimen/fifteen"
+    android:paddingTop="@dimen/ten"
     tools:context="youtubeapidemo.examples.com.bakingapp.IngredientActivity">
 
     <android.support.v7.widget.CardView

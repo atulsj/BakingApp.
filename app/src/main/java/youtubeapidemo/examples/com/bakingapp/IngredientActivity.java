@@ -7,18 +7,17 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.ProgressBar;
 
 public class IngredientActivity extends AppCompatActivity {
 
     public static final String ARG ="Set Arguments" ;
-    public static ProgressBar mProgressBar;
+   // public static ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient);
-        mProgressBar = (ProgressBar) findViewById(R.id.prog_ingredient);
+     //   mProgressBar = (ProgressBar) findViewById(R.id.prog_ingredient);
         ActionBar actionBar = getSupportActionBar();
         Intent intent = getIntent();
         String activityName = "Baking Activity";
@@ -37,7 +36,10 @@ public class IngredientActivity extends AppCompatActivity {
             actionBar.setTitle(activityName);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        if(getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE) {
+        Configuration configuration = getResources().getConfiguration();
+        int smallestScreenWidthDp = configuration.smallestScreenWidthDp;
+        if(getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE &&
+                smallestScreenWidthDp>= 600) {
             DescriptionActivityFragment descriptionActivityFragment = new DescriptionActivityFragment();
             Bundle args = new Bundle();
             args.putInt(ARG,pos);

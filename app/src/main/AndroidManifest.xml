@@ -25,6 +25,7 @@
         </activity>
         <activity
             android:name=".IngredientActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".MainActivity"
             tools:targetApi="jelly_bean">
             <meta-data
@@ -33,7 +34,13 @@
         </activity>
         <activity
             android:name=".DescriptionActivity"
-            android:label="Baking..." />
+            android:label="Baking..."
+            android:parentActivityName=".IngredientActivity"
+            tools:targetApi="jelly_bean">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".IngredientActivity" />
+        </activity>
 
         <provider
             android:name=".provider.BakeListContentProvider"
