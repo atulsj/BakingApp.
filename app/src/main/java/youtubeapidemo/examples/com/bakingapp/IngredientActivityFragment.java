@@ -30,12 +30,11 @@ import java.util.ArrayList;
 
 public class IngredientActivityFragment extends Fragment {
     // @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     // @BindView(R.id.cook_custom_button)
-    Button cookingButton;
+    private Button cookingButton;
     // @BindView(R.id.card_view_ingredients)
-    CardView cardViewIngredients;
-
+    private CardView cardViewIngredients;
     public static final String TAG = IngredientActivityFragment.class.getSimpleName();
     private IngredientAdapter ingredientAdapter;
     public static int pos;
@@ -52,12 +51,14 @@ public class IngredientActivityFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_ingredient_activity, container, false);
         //ButterKnife.bind(this, root);
         recyclerView = root.findViewById(R.id.recycler_view);
+        ingredientHead = root.findViewById(R.id.ingredient_head);
+
         if (getActivity().getResources().getConfiguration().orientation ==
                 Configuration.ORIENTATION_PORTRAIT) {
             cookingButton = root.findViewById(R.id.cook_custom_button);
             cardViewIngredients = root.findViewById(R.id.card_view_ingredients);
         }
-        ingredientHead = root.findViewById(R.id.ingredient_head);
+
 
         arrayList = new ArrayList<>();
         descriptionArrayList = new ArrayList<>();
@@ -81,6 +82,17 @@ public class IngredientActivityFragment extends Fragment {
                 Configuration.ORIENTATION_PORTRAIT) {
             RecyclerView.OnItemTouchListener disabler = new RecyclerViewDisabler();
             recyclerView.addOnItemTouchListener(disabler);
+            cookingButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), DescriptionActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList(DESCRIPTION_ARRAY_LIST,
+                            descriptionArrayList);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+            });
         }
         return root;
     }
@@ -92,7 +104,7 @@ public class IngredientActivityFragment extends Fragment {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        String ingredientsRequirent ;
+                        String ingredientsRequirent;
                         try {
                             JSONObject recipe = (JSONObject) response.get(pos);
                             JSONArray ingredients = recipe.getJSONArray("ingredients");
@@ -105,35 +117,22 @@ public class IngredientActivityFragment extends Fragment {
 
                             /*Cooking button,card View  is not available in Landscape layout*/
 
-                                JSONArray steps = recipe.getJSONArray("steps");
-                                for (int i = 0; i < steps.length(); i++) {
-                                    JSONObject step = (JSONObject) steps.get(i);
-                                    int id = step.getInt("id");
-                                    String shortDescription = step.getString("shortDescription");
-                                    String describe = step.getString("description");
-                                    String videoURL = step.getString("videoURL");
-                                    descriptionArrayList.add(new Description(id, shortDescription,
-                                            describe, videoURL));
-                                }
-                            if (getActivity().getResources().getConfiguration().orientation ==
+                            JSONArray steps = recipe.getJSONArray("steps");
+                            for (int i = 0; i < steps.length(); i++) {
+                                JSONObject step = (JSONObject) steps.get(i);
+                                int id = step.getInt("id");
+                                String shortDescription = step.getString("shortDescription");
+                                String describe = step.getString("description");
+                                String videoURL = step.getString("videoURL");
+                                descriptionArrayList.add(new Description(id, shortDescription,
+                                        describe, videoURL));
+                            }
+                            if(getActivity().getResources().getConfiguration().orientation==
                                     Configuration.ORIENTATION_PORTRAIT) {
-
-                                cookingButton.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent intent = new Intent(getActivity(), DescriptionActivity.class);
-                                        Bundle bundle = new Bundle();
-                                        bundle.putParcelableArrayList(DESCRIPTION_ARRAY_LIST,
-                                                descriptionArrayList);
-                                        intent.putExtras(bundle);
-                                        startActivity(intent);
-                                    }
-                                });
-
                                 cookingButton.setVisibility(View.VISIBLE);
                                 cardViewIngredients.setVisibility(View.VISIBLE);
-
                             }
+
                             ingredientHead.setVisibility(View.VISIBLE);
                             ingredientAdapter.changeData(arrayList);
                         } catch (JSONException e) {
@@ -175,9 +174,4 @@ public class IngredientActivityFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-    }
 }
